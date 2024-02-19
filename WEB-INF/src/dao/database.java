@@ -27,7 +27,7 @@ public class database implements DAOIngredient {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Ingredients ingredient = new Ingredients(rs.getString("name"), rs.getInt("id"));
+                Ingredients ingredient = new Ingredients(rs.getString("nom"), rs.getInt("prix"), rs.getInt("id"));
                 ingredients.add(ingredient);
             }
         } catch (SQLException e) {
