@@ -19,6 +19,7 @@ public class database implements DAOIngredient {
     }
 
     public List<Ingredients> findAll() {
+        con = ds.getConnection();
         List<Ingredients> ingredients = new ArrayList<Ingredients>();
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients");
@@ -40,6 +41,7 @@ public class database implements DAOIngredient {
     }
 
     public Ingredients findById(int id) {
+        con = ds.getConnection();
         Ingredients ingredient = new Ingredients();
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients where id = ?");
@@ -63,6 +65,7 @@ public class database implements DAOIngredient {
     }
 
     public void save(Ingredients ingredient) {
+        con = ds.getConnection();
         try {
             PreparedStatement ps = con.prepareStatement("insert into ingredients (nom,id,prix) values (?,?,?)");
             ps.setString(1, ingredient.getNom());
