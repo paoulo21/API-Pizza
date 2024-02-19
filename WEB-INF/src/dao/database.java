@@ -52,7 +52,7 @@ public class database implements DAOIngredient {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ingredient = new Ingredients(rs.getString("name"), rs.getInt("id"));
+                ingredient = new Ingredients(rs.getString("nom"), rs.getInt("prix"), rs.getInt("id"));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
