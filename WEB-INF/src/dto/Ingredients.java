@@ -2,29 +2,29 @@ package dto;
 
 public class Ingredients {
     private int id;
-    private String name;
-    private int price;
+    private String nom;
+    private int prix;
 
-    public Ingredients(String name, int price, int id) {
+    public Ingredients(String nom, int prix, int id) {
         this.id = id;
-        this.name = name;
-        this.price = price;
+        this.nom = nom;
+        this.prix = prix;
     }
 
-    public Ingredients(String name, int id) {
+    public Ingredients(String nom, int id) {
         this.id = id;
-        this.name = name;
+        this.nom = nom;
     }
 
     public Ingredients() {
     }
 
-    public String getName() {
-        return name;
+    public String getNom() {
+        return nom;
     }
 
-    public int getPrice() {
-        return price;
+    public int getPrix() {
+        return prix;
     }
 
     public int getId() {
@@ -35,17 +35,20 @@ public class Ingredients {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public void setPrice(int price) {
-        this.price = price;
+        this.prix = price;
     }
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return getName() + " " + getPrice() + " " + getId();
+        return getNom() + " " + getPrix() + " " + getId();
+    }
+    public static void main(String[] args) {
+        
     }
 }

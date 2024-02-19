@@ -65,7 +65,7 @@ public class IngredientDAODatabase implements DAOIngredient {
     public void save(Ingredients ingredient) {
         try {
             PreparedStatement ps = con.prepareStatement("insert into ingredients (name,id) values (?,?)");
-            ps.setString(1, ingredient.getName());
+            ps.setString(1, ingredient.getNom());
             ps.setInt(2, ingredient.getId());
             ps.executeUpdate();
 

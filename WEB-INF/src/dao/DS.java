@@ -13,7 +13,7 @@ public class DS {
 
 	public DS() {
 		p = new Properties();
-		File file = new File("./config.prop");
+		File file = new File("/home/infoetu/mathis.decoster.etu/r3.01-tomcat/bin/config.prop");
 		try {
 			p.load(new FileInputStream(file));
 		} catch (IOException e) {

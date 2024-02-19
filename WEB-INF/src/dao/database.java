@@ -72,7 +72,7 @@ public class database implements DAOIngredient {
         con = ds.getConnection();
         try {
             PreparedStatement ps = con.prepareStatement("insert into ingredients (name,id) values (?,?)");
-            ps.setString(1, ingredient.getName());
+            ps.setString(1, ingredient.getNom());
             ps.setInt(2, ingredient.getId());
             ps.executeUpdate();
 
