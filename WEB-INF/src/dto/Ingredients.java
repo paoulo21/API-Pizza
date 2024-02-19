@@ -45,10 +45,10 @@ public class Ingredients {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return getNom() + " " + getPrix() + " " + getId();
     }
+
     public static void main(String[] args) {
-        
+
     }
 }

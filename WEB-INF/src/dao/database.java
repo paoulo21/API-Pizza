@@ -11,7 +11,7 @@ import java.util.List;
 public class database implements DAOIngredient {
 
     DS ds;
-    Connection con = null;
+    Connection con;
 
     public database() {
         ds = new DS();
@@ -19,9 +19,6 @@ public class database implements DAOIngredient {
     }
 
     public List<Ingredients> findAll() {
-        ds = new DS();
-        con = ds.getConnection();
-        System.out.println(con);
         List<Ingredients> ingredients = new ArrayList<Ingredients>();
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients");
@@ -43,8 +40,6 @@ public class database implements DAOIngredient {
     }
 
     public Ingredients findById(int id) {
-        ds = new DS();
-        con = ds.getConnection();
         Ingredients ingredient = new Ingredients();
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients where id = ?");
@@ -68,12 +63,11 @@ public class database implements DAOIngredient {
     }
 
     public void save(Ingredients ingredient) {
-        ds = new DS();
-        con = ds.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("insert into ingredients (name,id) values (?,?)");
+            PreparedStatement ps = con.prepareStatement("insert into ingredients (nom,id,prix) values (?,?,?)");
             ps.setString(1, ingredient.getNom());
             ps.setInt(2, ingredient.getId());
+            ps.setInt(3, ingredient.getPrix());
             ps.executeUpdate();
 
         } catch (SQLException e) {
@@ -88,7 +82,6 @@ public class database implements DAOIngredient {
     }
 
     public static void main(String[] args) {
-        database dao = new database();
-        System.out.println(dao.findAll());
+
     }
 }
