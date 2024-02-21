@@ -8,12 +8,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class database implements DAOIngredient {
+public class IngredientDAO implements DAOIngredient {
 
     DS ds;
     Connection con;
 
-    public database() {
+    public IngredientDAO() {
         ds = new DS();
         con = ds.getConnection();
     }

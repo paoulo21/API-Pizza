@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dao.database;
+import dao.IngredientDAO;
 import dao.IngredientDAOList;
 import dto.Ingredients;
 import jakarta.servlet.*;
@@ -14,7 +14,7 @@ import jakarta.servlet.annotation.WebServlet;
 
 @WebServlet("/ingredients/*")
 public class IngredientRestAPI extends HttpServlet {
-    database dao = new database();
+    IngredientDAO dao = new IngredientDAO();
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
@@ -29,7 +29,7 @@ public class IngredientRestAPI extends HttpServlet {
             return;
         }
         String[] splits = info.split("/");
-        if (splits.length > 3){
+        if (splits.length > 3) {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -40,9 +40,9 @@ public class IngredientRestAPI extends HttpServlet {
             res.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        if(splits.length == 2){
+        if (splits.length == 2) {
             out.print(objectMapper.writeValueAsString(e));
-        } else if(splits.length == 3 && splits[2].equals("name")){
+        } else if (splits.length == 3 && splits[2].equals("name")) {
             out.print(objectMapper.writeValueAsString(e.getNom()));
         } else {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,7 +59,7 @@ public class IngredientRestAPI extends HttpServlet {
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
             Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
-            if(!dao.save(e)){
+            if (!dao.save(e)) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
@@ -78,7 +78,7 @@ public class IngredientRestAPI extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
         int id = Integer.parseInt(splits[1]);
-        if(!dao.delete(id)){
+        if (!dao.delete(id)) {
             res.sendError(HttpServletResponse.SC_CONFLICT);
             return;
         }

@@ -32,7 +32,8 @@ public class IngredientDAOList implements DAOIngredient {
         }
     }
 
-    public void save(Ingredients ingredient) {
+    public boolean save(Ingredients ingredient) {
         ingredients.add(ingredient);
+        return true;
     }
 }
