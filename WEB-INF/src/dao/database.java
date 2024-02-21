@@ -88,6 +88,32 @@ public class database implements DAOIngredient {
         return false;
     }
 
+    public boolean delete(int id){
+        con = ds.getConnection();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("DELETE FROM ingredients where id = ?");
+            ps.setInt(1, id);
+            int result = ps.executeUpdate();
+            if(result == 1){
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
     }

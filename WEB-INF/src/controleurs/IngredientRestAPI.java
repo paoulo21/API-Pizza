@@ -71,8 +71,20 @@ public class IngredientRestAPI extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = res.getWriter();
+        String info = req.getPathInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String[] splits = info.split("/");
+        int id = Integer.parseInt(splits[1]);
+        if(!dao.delete(id)){
+            res.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        List<Ingredients> l = dao.findAll();
+        String jsonstring = objectMapper.writeValueAsString(l);
+        out.print(jsonstring);
     }
 
 }
