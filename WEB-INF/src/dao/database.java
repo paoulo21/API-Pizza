@@ -64,15 +64,18 @@ public class database implements DAOIngredient {
         return ingredient;
     }
 
-    public void save(Ingredients ingredient) {
+    public boolean save(Ingredients ingredient) {
         con = ds.getConnection();
         try {
             PreparedStatement ps = con.prepareStatement("insert into ingredients (nom,id,prix) values (?,?,?)");
             ps.setString(1, ingredient.getNom());
             ps.setInt(2, ingredient.getId());
             ps.setInt(3, ingredient.getPrix());
-            ps.executeUpdate();
-
+            int res = ps.executeUpdate();
+            if (res == 1) {
+                con.close();
+                return true;
+            }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
@@ -82,6 +85,7 @@ public class database implements DAOIngredient {
             } catch (Exception e2) {
             }
         }
+        return false;
     }
 
     public static void main(String[] args) {

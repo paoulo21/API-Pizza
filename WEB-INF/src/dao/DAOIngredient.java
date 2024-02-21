@@ -9,5 +9,5 @@ public interface DAOIngredient {
 
     public Ingredients findById(int id);
 
-    public void save(Ingredients ingredient);
+    public boolean save(Ingredients ingredient);
 }

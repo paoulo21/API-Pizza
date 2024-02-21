@@ -1,5 +1,5 @@
 drop table if exists ingredients;
-CREATE TABLE ingredients(id int, nom text,prix int);
+CREATE TABLE ingredients(id int primary key, nom text,prix int);
 INSERT INTO ingredients VALUES (1,'pomme de terre',3);
 INSERT INTO ingredients VALUES (2,'poivrons',2);
 INSERT INTO ingredients VALUES (3,'chorizo',4);
