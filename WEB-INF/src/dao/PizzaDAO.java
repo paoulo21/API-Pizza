@@ -112,7 +112,7 @@ public class PizzaDAO {
         con = ds.getConnection();
         try {
 
-            PreparedStatement ps = con.prepareStatement("DELETE FROM ingredients where id = ?");
+            PreparedStatement ps = con.prepareStatement("DELETE FROM pizzas where id = ?");
             ps.setInt(1, id);
             int result = ps.executeUpdate();
             if (result == 1) {
