@@ -1,6 +1,8 @@
 package dao;
 
 import dto.Ingredients;
+import dto.Pizzas;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,15 +20,17 @@ public class PizzaDAO {
         con = ds.getConnection();
     }
 
-    public List<Ingredients> findAll() {
+    public List<Pizzas> findAll() {
         con = ds.getConnection();
-        List<Ingredients> ingredients = new ArrayList<Ingredients>();
+        List<Pizzas> pizzas = new ArrayList<Pizzas>();
         try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM pizzas");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                Ingredients ingredient = new Ingredients(rs.getString("nom"), rs.getInt("prix"), rs.getInt("id"));
-                ingredients.add(ingredient);
+                Pizzas pizza = new Pizzas(rs.getInt("id"), rs.getString("nom"), rs.getInt("prixBase"),
+                        rs.getString("pate"));
+                pizza.setIngredients(getIngredientFromPizza(pizza.getId()));
+                pizzas.add(pizza);
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -36,20 +40,34 @@ public class PizzaDAO {
                 con.close();
             } catch (Exception e2) {
             }
+        }
+        return pizzas;
+    }
+
+    private List<Ingredients> getIngredientFromPizza(int id) throws SQLException {
+        List<Ingredients> ingredients = new ArrayList<Ingredients>();
+        PreparedStatement ps2 = con.prepareStatement("SELECT * FROM ingredientsPizza where idPiz = ?");
+        ps2.setInt(1, id);
+        ResultSet rs2 = ps2.executeQuery();
+        while (rs2.next()) {
+            Ingredients ingredient = new Ingredients(rs2.getString("nom"), rs2.getInt("prix"), rs2.getInt("id"));
+            ingredients.add(ingredient);
         }
         return ingredients;
     }
 
-    public Ingredients findById(int id) {
+    public Pizzas findById(int id) {
         con = ds.getConnection();
-        Ingredients ingredient = new Ingredients();
+        Pizzas pizza = new Pizzas();
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM ingredients where id = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM pizzas where id = ?");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                ingredient = new Ingredients(rs.getString("nom"), rs.getInt("prix"), rs.getInt("id"));
+                pizza = new Pizzas(rs.getInt("id"), rs.getString("nom"), rs.getInt("prixBase"),
+                        rs.getString("pate"));
+                pizza.setIngredients(getIngredientFromPizza(pizza.getId()));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -61,7 +79,7 @@ public class PizzaDAO {
             }
 
         }
-        return ingredient;
+        return pizza;
     }
 
     public boolean save(Ingredients ingredient) {

@@ -63,4 +63,7 @@ public class Pizzas {
         this.ingredients = ingredients;
     }
 
+    public void add(Ingredients ingredient) {
+        ingredients.add(ingredient);
+    }
 }
