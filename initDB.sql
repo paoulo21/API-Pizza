@@ -1,6 +1,7 @@
+drop table if exists ingredientsPizza;
 drop table if exists ingredients;
 drop table if exists pizzas;
-drop table if exists ingredientsPizza;
+
 CREATE TABLE ingredients(id int primary key, nom text,prix int);
 INSERT INTO ingredients VALUES (1,'pomme de terre',3);
 INSERT INTO ingredients VALUES (2,'poivrons',2);
@@ -15,8 +16,8 @@ INSERT INTO pizzas VALUES (3,'canibale',8, 'normal');
 CREATE TABLE ingredientsPizza(
     idPiz int,
     idIng int,
-    FOREIGN KEY (idPiz) references pizzas(id),
-    FOREIGN KEY (idIng) references ingredients(id));
+    FOREIGN KEY (idPiz) references pizzas(id) ON DELETE CASCADE,
+    FOREIGN KEY (idIng) references ingredients(id) ON DELETE CASCADE) ;
 INSERT INTO ingredientsPizza VALUES (1,1);
 INSERT INTO ingredientsPizza VALUES (1,4);
 INSERT INTO ingredientsPizza VALUES (2,3);
