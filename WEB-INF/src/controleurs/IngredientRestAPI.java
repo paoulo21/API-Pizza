@@ -1,5 +1,6 @@
 package controleurs;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,10 +55,24 @@ public class IngredientRestAPI extends HttpServlet {
             throws ServletException, java.io.IOException {
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
-        dao.save(e);
-        out.print(objectMapper.writeValueAsString(e));
-
+        String info = req.getPathInfo();
+        if (info == null || info.equals("/")) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            if(!dao.save(e)){
+                res.sendError(HttpServletResponse.SC_CONFLICT);
+                return;
+            }
+            out.print(objectMapper.writeValueAsString(e));
+        } else {
+            res.sendError(HttpServletResponse.SC_NO_CONTENT);
+            return;
+        }
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        
+    }
+
 }
