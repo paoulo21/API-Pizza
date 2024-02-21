@@ -66,12 +66,10 @@ public class PizzaRestApi extends HttpServlet {
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
             Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
-            /*
-             * if (!dao.save(e)) {
-             * res.sendError(HttpServletResponse.SC_CONFLICT);
-             * return;
-             * }
-             */
+            if (!dao.save(e)) {
+                res.sendError(HttpServletResponse.SC_CONFLICT);
+                return;
+            }
             out.print(objectMapper.writeValueAsString(e));
         } else {
             res.sendError(HttpServletResponse.SC_NO_CONTENT);
@@ -95,10 +93,15 @@ public class PizzaRestApi extends HttpServlet {
             String jsonstring = objectMapper.writeValueAsString(l);
             out.print(jsonstring);
         } else if (splits.length == 3) {
-            String idIngredient = splits[2];
-            // dao.deleteIngredientFromPizza(id, idIngredient);
-            Pizzas e = dao.findById(id);
-            out.print(objectMapper.writeValueAsString(e));
+            int idIngredient = Integer.parseInt(splits[2]);
+            if (dao.deleteIngredientsFromPizza(id, idIngredient)) {
+                Pizzas e = dao.findById(id);
+                out.print(objectMapper.writeValueAsString(e));
+            } else {
+                res.sendError(HttpServletResponse.SC_CONFLICT);
+                return;
+            }
+
         }
 
     }

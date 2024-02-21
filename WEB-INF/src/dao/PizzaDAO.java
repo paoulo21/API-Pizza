@@ -29,7 +29,7 @@ public class PizzaDAO {
             while (rs.next()) {
                 Pizzas pizza = new Pizzas(rs.getInt("id"), rs.getString("nom"), rs.getInt("prixBase"),
                         rs.getString("pate"));
-                pizza.setIngredients(getIngredientFromPizza(pizza.getId()));
+                pizza.setIngredients(getIngredientsFromPizza(pizza.getId()));
                 pizzas.add(pizza);
             }
         } catch (SQLException e) {
@@ -44,7 +44,7 @@ public class PizzaDAO {
         return pizzas;
     }
 
-    private List<Ingredients> getIngredientFromPizza(int id) throws SQLException {
+    private List<Ingredients> getIngredientsFromPizza(int id) throws SQLException {
         List<Ingredients> ingredients = new ArrayList<Ingredients>();
         PreparedStatement ps2 = con
                 .prepareStatement(
@@ -52,8 +52,8 @@ public class PizzaDAO {
         ps2.setInt(1, id);
         ResultSet rs2 = ps2.executeQuery();
         while (rs2.next()) {
-            Ingredients ingredient = new Ingredients(rs2.getString("nom"), rs2.getInt("prix"), rs2.getInt("id"));
-            ingredients.add(ingredient);
+            Ingredients pizza = new Ingredients(rs2.getString("nom"), rs2.getInt("prix"), rs2.getInt("id"));
+            ingredients.add(pizza);
         }
         return ingredients;
     }
@@ -69,7 +69,7 @@ public class PizzaDAO {
             while (rs.next()) {
                 pizza = new Pizzas(rs.getInt("id"), rs.getString("nom"), rs.getInt("prixBase"),
                         rs.getString("pate"));
-                pizza.setIngredients(getIngredientFromPizza(pizza.getId()));
+                pizza.setIngredients(getIngredientsFromPizza(pizza.getId()));
             }
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -84,15 +84,23 @@ public class PizzaDAO {
         return pizza;
     }
 
-    public boolean save(Ingredients ingredient) {
+    public boolean save(Pizzas pizza) {
         con = ds.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("insert into ingredients (nom,id,prix) values (?,?,?)");
-            ps.setString(1, ingredient.getNom());
-            ps.setInt(2, ingredient.getId());
-            ps.setInt(3, ingredient.getPrix());
+            PreparedStatement ps = con.prepareStatement("insert into pizzas (nom,id,prixBase,pate) values (?,?,?,?)");
+            ps.setString(1, pizza.getNom());
+            ps.setInt(2, pizza.getId());
+            ps.setInt(3, pizza.getPrixBase());
+            ps.setString(4, pizza.getPate());
             int res = ps.executeUpdate();
             if (res == 1) {
+                for (Ingredients ingredient : pizza.getIngredients()) {
+                    PreparedStatement ps2 = con
+                            .prepareStatement("insert into ingredientsPizza (idPiz,idIng) values (?,?)");
+                    ps2.setInt(1, pizza.getId());
+                    ps2.setInt(2, ingredient.getId());
+                    ps2.executeUpdate();
+                }
                 con.close();
                 return true;
             }
@@ -136,12 +144,13 @@ public class PizzaDAO {
         return false;
     }
 
-    public boolean deleteIngredientFromPizza(int id) {
+    public boolean deleteIngredientsFromPizza(int idPIz, int idIng) {
         con = ds.getConnection();
         try {
 
-            PreparedStatement ps = con.prepareStatement("DELETE FROM ingredientsPizza where id = ?");
-            ps.setInt(1, id);
+            PreparedStatement ps = con.prepareStatement("DELETE FROM ingredientsPizza where idPiz = ? and idIng = ?");
+            ps.setInt(1, idPIz);
+            ps.setInt(2, idIng);
             int result = ps.executeUpdate();
             if (result == 1) {
                 con.close();
