@@ -46,7 +46,9 @@ public class PizzaDAO {
 
     private List<Ingredients> getIngredientFromPizza(int id) throws SQLException {
         List<Ingredients> ingredients = new ArrayList<Ingredients>();
-        PreparedStatement ps2 = con.prepareStatement("SELECT * FROM ingredientsPizza where idPiz = ?");
+        PreparedStatement ps2 = con
+                .prepareStatement(
+                        "SELECT id,nom,prix FROM ingredientsPizza,ingredients where idPiz = ? and idIng = id");
         ps2.setInt(1, id);
         ResultSet rs2 = ps2.executeQuery();
         while (rs2.next()) {
