@@ -38,6 +38,14 @@ public class Pizzas {
         return pate;
     }
 
+    public int getPrixTotal(){
+        int prixfinal = 0;
+            for (Ingredients ing : ingredients) {
+                prixfinal += ing.getPrix();
+            }
+            prixfinal += prixBase;
+        return prixfinal;
+    }
     // Setters
     public void setId(int id) {
         this.id = id;
