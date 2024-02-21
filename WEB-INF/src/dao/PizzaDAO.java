@@ -173,6 +173,33 @@ public class PizzaDAO {
         return false;
     }
 
+    public boolean patch(Pizzas pizza){
+        con = ds.getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement("UPDATE TABLE pizzas SET nom='?' , prixBase=? , pate=? WHERE id='"+pizza.getId()+"' ");
+            ps.setString(1, pizza.getNom());
+            ps.setInt(1, pizza.getPrixBase());
+            ps.setString(1, pizza.getPate());
+            int result = ps.executeUpdate();
+            con.close();
+            if(result == 1){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
     }

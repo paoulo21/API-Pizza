@@ -18,6 +18,34 @@ import jakarta.servlet.annotation.WebServlet;
 public class PizzaRestApi extends HttpServlet {
     PizzaDAO dao = new PizzaDAO();
 
+    public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (req.getMethod().equalsIgnoreCase("PATCH")) {
+            doPatch(req, res);
+        } else {
+            super.service(req, res);
+        }
+    }
+
+    public void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+        res.setContentType("application/json;charset=UTF-8");
+        PrintWriter out = res.getWriter();
+        String info = req.getPathInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String[] splits = info.split("/");
+        if(splits.length == 2){
+            int id = Integer.parseInt(splits[1]);
+            Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
+            if(!dao.patch(e)){
+                res.sendError(HttpServletResponse.SC_CONFLICT);
+                return;
+            }
+            out.print(objectMapper.writeValueAsString(e));
+        }
+        
+        
+    }
+
+
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
         res.setContentType("application/json;charset=UTF-8");
