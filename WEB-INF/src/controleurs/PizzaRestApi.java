@@ -45,12 +45,7 @@ public class PizzaRestApi extends HttpServlet {
         if (splits.length == 2) {
             out.print(objectMapper.writeValueAsString(e));
         } else if (splits.length == 3 && splits[2].equals("prixfinal")) {
-            int prixfinal = 0;
-            for (Ingredients ing : e.getIngredients()) {
-                prixfinal += ing.getPrix();
-            }
-            prixfinal += e.getPrixBase();
-            out.print(prixfinal);
+            out.print(e.getPrixTotal());
         } else {
             res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;

@@ -40,11 +40,16 @@ public class Pizzas {
 
     public int getPrixTotal(){
         int prixfinal = 0;
+        if(ingredients == null) return prixBase;
+        else {
             for (Ingredients ing : ingredients) {
                 prixfinal += ing.getPrix();
             }
             prixfinal += prixBase;
-        return prixfinal;
+            return prixfinal;
+        }
+            
+        
     }
     // Setters
     public void setId(int id) {
