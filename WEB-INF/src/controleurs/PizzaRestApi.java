@@ -26,26 +26,24 @@ public class PizzaRestApi extends HttpServlet {
         }
     }
 
-    public void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+    public void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
-        if(splits.length == 2 ){
+        if (splits.length == 2) {
             int id = Integer.parseInt(splits[1]);
             int prix = objectMapper.readValue(req.getReader(), Integer.class);
-            if(!dao.patch(prix,id)){
-                res.sendError(HttpServletResponse.SC_CONFLICT);
+            if (!dao.patch(prix, id)) {
+                res.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
             Pizzas p = dao.findById(id);
             out.print(objectMapper.writeValueAsString(p));
         }
-        
-        
+        res.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
-
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
@@ -96,18 +94,18 @@ public class PizzaRestApi extends HttpServlet {
                 return;
             }
             out.print(objectMapper.writeValueAsString(e));
-        } else if(splits.length == 2){
+        } else if (splits.length == 2) {
             int id = Integer.parseInt(splits[1]);
             ObjectMapper objectMapper = new ObjectMapper();
             Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
-            if(!dao.addIngredientsAtPizza(id, e.getId())){
+            if (!dao.addIngredientsAtPizza(id, e.getId())) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
             Pizzas p = dao.findById(id);
             out.print(objectMapper.writeValueAsString(p));
-        }else {
-            res.sendError(HttpServletResponse.SC_NO_CONTENT);
+        } else {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
     }
@@ -121,7 +119,7 @@ public class PizzaRestApi extends HttpServlet {
         int id = Integer.parseInt(splits[1]);
         if (splits.length == 2) {
             if (!dao.delete(id)) {
-                res.sendError(HttpServletResponse.SC_CONFLICT);
+                res.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
             List<Pizzas> l = dao.findAll();
@@ -133,7 +131,7 @@ public class PizzaRestApi extends HttpServlet {
                 Pizzas e = dao.findById(id);
                 out.print(objectMapper.writeValueAsString(e));
             } else {
-                res.sendError(HttpServletResponse.SC_CONFLICT);
+                res.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
