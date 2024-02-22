@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dao.IngredientDAO;
 import dao.PizzaDAO;
 import dto.Ingredients;
 import dto.Pizzas;
@@ -18,6 +17,7 @@ import jakarta.servlet.annotation.WebServlet;
 public class PizzaRestApi extends HttpServlet {
     PizzaDAO dao = new PizzaDAO();
 
+    @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         if (req.getMethod().equalsIgnoreCase("PATCH")) {
             doPatch(req, res);

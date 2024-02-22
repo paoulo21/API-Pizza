@@ -1,8 +1,9 @@
 drop table if exists ingredientsPizza;
+drop table if exists pizzasCommande;
 drop table if exists ingredients;
 drop table if exists pizzas;
 drop table if exists commande;
-drop table if exists pizzasCommande;
+
 CREATE TABLE ingredients(id int primary key, nom text,prix int);
 INSERT INTO ingredients VALUES (1,'pomme de terre',3);
 INSERT INTO ingredients VALUES (2,'poivrons',2);
@@ -15,8 +16,9 @@ INSERT INTO pizzas VALUES (1,'savoyarde',10, 'extra');
 INSERT INTO pizzas VALUES (2,'chorizo',7, 'fine');
 INSERT INTO pizzas VALUES (3,'canibale',8, 'normal');
 CREATE TABLE ingredientsPizza(
-    idPiz int primary key,
-    idIng int primary key,
+    idPiz int,
+    idIng int,
+    PRIMARY KEY(idPiz,idIng),
     FOREIGN KEY (idPiz) references pizzas(id) ON DELETE CASCADE,
     FOREIGN KEY (idIng) references ingredients(id) ON DELETE CASCADE) ;
 INSERT INTO ingredientsPizza VALUES (1,1);
@@ -25,12 +27,15 @@ INSERT INTO ingredientsPizza VALUES (2,3);
 INSERT INTO ingredientsPizza VALUES (3,3);
 INSERT INTO ingredientsPizza VALUES (3,4);
 create table commande(id int primary key, nom text, dateCommande date);
+INSERT INTO commande VALUES (1,'commande1','2023-08-15');
+INSERT INTO commande VALUES (2,'commande2','2023-12-24');
 create table pizzasCommande(
-    idCom int primary key,
-    idPiz int primary key,
+    idCom int,
+    idPiz int,
+    PRIMARY KEY(idCom,idPiz),
     FOREIGN KEY (idPiz) references pizzas(id) ON DELETE CASCADE,
     FOREIGN KEY (idCom) references commande(id) ON DELETE CASCADE);
-INSERT INTO ingredientsPizza VALUES (1,1);
-INSERT INTO ingredientsPizza VALUES (1,2);
-INSERT INTO ingredientsPizza VALUES (2,1);
-INSERT INTO ingredientsPizza VALUES (2,3);
+INSERT INTO pizzasCommande VALUES (1,1);
+INSERT INTO pizzasCommande VALUES (1,2);
+INSERT INTO pizzasCommande VALUES (2,1);
+INSERT INTO pizzasCommande VALUES (2,3);
