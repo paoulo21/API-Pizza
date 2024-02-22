@@ -86,6 +86,7 @@ public class PizzaRestApi extends HttpServlet {
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
+        String[] splits = info.split("/");
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
             Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
@@ -94,7 +95,17 @@ public class PizzaRestApi extends HttpServlet {
                 return;
             }
             out.print(objectMapper.writeValueAsString(e));
-        } else {
+        } else if(splits.length == 2){
+            int id = Integer.parseInt(splits[1]);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            if(!dao.addIngredientsAtPizza(id, e.getId())){
+                res.sendError(HttpServletResponse.SC_CONFLICT);
+                return;
+            }
+            Pizzas p = dao.findById(id);
+            out.print(objectMapper.writeValueAsString(p));
+        }else {
             res.sendError(HttpServletResponse.SC_NO_CONTENT);
             return;
         }

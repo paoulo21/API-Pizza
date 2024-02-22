@@ -5,28 +5,15 @@ meta {
 }
 
 post {
-  url: http://localhost:8080/pizzeria/pizzas/
+  url: http://localhost:8080/pizzeria/pizzas/1
   body: json
   auth: none
 }
 
 body:json {
   {
-    "id": 4,
-    "nom": "végé",
-    "prixBase": 5,
-    "pate": "fine",
-    "ingredients": [
-      {
-        "id": 1,
-        "nom": "pomme de terre",
-        "prix": 3
-      },
-      {
-        "id": 2,
-        "nom": "poivrons",
-        "prix": 2
-      }
-    ]
+      "id": 1,
+      "nom": "pomme de terre",
+      "prix": 3
   }
 }

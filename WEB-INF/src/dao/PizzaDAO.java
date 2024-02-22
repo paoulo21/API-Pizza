@@ -173,6 +173,35 @@ public class PizzaDAO {
         return false;
     }
 
+    public boolean addIngredientsAtPizza(int idPIz, int idIng) {
+        con = ds.getConnection();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("INSERT INTO ingredientsPizza VALUES(?,?)");
+            ps.setInt(1, idPIz);
+            ps.setInt(2, idIng);
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
+        }
+        return false;
+    }
+
     public boolean patch(Pizzas pizza){
         con = ds.getConnection();
         try {
