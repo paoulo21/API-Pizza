@@ -45,4 +45,8 @@ public class Commande {
     public List<Pizzas> getPizzas() {
         return pizzas;
     }
+
+    public void setPizzas(List<Pizzas> piz){
+        this.pizzas = piz;
+    }
 }

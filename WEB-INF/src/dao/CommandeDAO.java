@@ -28,7 +28,7 @@ public class CommandeDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Commande commande = new Commande(rs.getInt("id"), rs.getString("nom"), rs.getDate("dateCommande"));
-                
+                commande.setPizzas(getPizzasFromCommande(commande.getId()));
                 liste.add(commande);
             }
         }catch (SQLException e) {
