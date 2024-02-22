@@ -15,8 +15,8 @@ INSERT INTO pizzas VALUES (1,'savoyarde',10, 'extra');
 INSERT INTO pizzas VALUES (2,'chorizo',7, 'fine');
 INSERT INTO pizzas VALUES (3,'canibale',8, 'normal');
 CREATE TABLE ingredientsPizza(
-    idPiz int,
-    idIng int,
+    idPiz int primary key,
+    idIng int primary key,
     FOREIGN KEY (idPiz) references pizzas(id) ON DELETE CASCADE,
     FOREIGN KEY (idIng) references ingredients(id) ON DELETE CASCADE) ;
 INSERT INTO ingredientsPizza VALUES (1,1);
@@ -26,8 +26,8 @@ INSERT INTO ingredientsPizza VALUES (3,3);
 INSERT INTO ingredientsPizza VALUES (3,4);
 create table commande(id int primary key, nom text, dateCommande date);
 create table pizzasCommande(
-    idCom int,
-    idPiz int,
+    idCom int primary key,
+    idPiz int primary key,
     FOREIGN KEY (idPiz) references pizzas(id) ON DELETE CASCADE,
     FOREIGN KEY (idCom) references commande(id) ON DELETE CASCADE);
 INSERT INTO ingredientsPizza VALUES (1,1);
