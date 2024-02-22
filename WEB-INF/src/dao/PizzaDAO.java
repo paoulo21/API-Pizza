@@ -202,16 +202,15 @@ public class PizzaDAO {
         return false;
     }
 
-    public boolean patch(Pizzas pizza){
+    public boolean patch(int prix, int id){
         con = ds.getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("UPDATE TABLE pizzas SET nom='?' , prixBase=? , pate=? WHERE id='"+pizza.getId()+"' ");
-            ps.setString(1, pizza.getNom());
-            ps.setInt(1, pizza.getPrixBase());
-            ps.setString(1, pizza.getPate());
+            PreparedStatement ps = con.prepareStatement("UPDATE pizzas SET prixBase=? WHERE id=? ");
+            ps.setInt(1, prix);
+            ps.setInt(2, id);
             int result = ps.executeUpdate();
             con.close();
-            if(result == 1){
+            if(result > 0){
                 return true;
             } else {
                 return false;

@@ -4,8 +4,12 @@ meta {
   seq: 12
 }
 
-get {
+patch {
   url: http://localhost:8080/pizzeria/pizzas/1
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  10
 }

@@ -34,12 +34,13 @@ public class PizzaRestApi extends HttpServlet {
         String[] splits = info.split("/");
         if(splits.length == 2 ){
             int id = Integer.parseInt(splits[1]);
-            Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
-            if(!dao.patch(e)){
+            int prix = objectMapper.readValue(req.getReader(), Integer.class);
+            if(!dao.patch(prix,id)){
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
-            out.print(objectMapper.writeValueAsString(e));
+            Pizzas p = dao.findById(id);
+            out.print(objectMapper.writeValueAsString(p));
         }
         
         
