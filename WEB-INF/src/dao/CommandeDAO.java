@@ -52,8 +52,23 @@ public class CommandeDAO {
         ResultSet rs2 = ps2.executeQuery();
         while (rs2.next()) {
             Pizzas pizza = new Pizzas(rs2.getInt("id"), rs2.getString("nom"), rs2.getInt("prixBase"), rs2.getString("pate") );
+            pizza.setIngredients(getIngredientsFromPizza(pizza.getId()));
             commande.add(pizza);
         }
         return commande;
+    }
+
+    private List<Ingredients> getIngredientsFromPizza(int id) throws SQLException {
+        List<Ingredients> ingredients = new ArrayList<Ingredients>();
+        PreparedStatement ps2 = con
+                .prepareStatement(
+                        "SELECT id,nom,prix FROM ingredientsPizza,ingredients where idPiz = ? and idIng = id");
+        ps2.setInt(1, id);
+        ResultSet rs2 = ps2.executeQuery();
+        while (rs2.next()) {
+            Ingredients pizza = new Ingredients(rs2.getString("nom"), rs2.getInt("prix"), rs2.getInt("id"));
+            ingredients.add(pizza);
+        }
+        return ingredients;
     }
 }

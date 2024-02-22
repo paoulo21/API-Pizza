@@ -32,7 +32,7 @@ public class PizzaRestApi extends HttpServlet {
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
-        if(splits.length == 2){
+        if(splits.length == 2 ){
             int id = Integer.parseInt(splits[1]);
             Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
             if(!dao.patch(e)){
