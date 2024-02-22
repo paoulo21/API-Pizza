@@ -35,7 +35,13 @@ public class IngredientRestAPI extends HttpServlet {
         }
 
         String id = splits[1];
-        Ingredients e = dao.findById(Integer.parseInt(id));
+        Ingredients e;
+        try {
+            e = dao.findById(Integer.parseInt(id));
+        } catch (Exception ex) {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         if (e == null) {
             res.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -78,7 +84,13 @@ public class IngredientRestAPI extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
         if (splits.length == 2) {
-            int id = Integer.parseInt(splits[1]);
+            int id;
+            try {
+                id = Integer.parseInt(splits[1]);
+            } catch (NumberFormatException e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.delete(id)) {
                 res.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -86,8 +98,10 @@ public class IngredientRestAPI extends HttpServlet {
             List<Ingredients> l = dao.findAll();
             String jsonstring = objectMapper.writeValueAsString(l);
             out.print(jsonstring);
+            return;
+        } else {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
-        res.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
@@ -107,7 +121,13 @@ public class IngredientRestAPI extends HttpServlet {
         int prix = objectMapper.readValue(req.getReader(), Integer.class);
         String[] splits = info.split("/");
         if (splits.length == 2) {
-            int id = Integer.parseInt(splits[1]);
+            int id;
+            try {
+                id = Integer.parseInt(splits[1]);
+            } catch (NumberFormatException e) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.changePrice(id, prix)) {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
