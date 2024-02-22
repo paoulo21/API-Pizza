@@ -116,6 +116,29 @@ public class IngredientDAO implements DAOIngredient {
         return false;
     }
 
+    public boolean changePrice(int id, int prix) {
+        con = ds.getConnection();
+        try {
+            PreparedStatement ps = con.prepareStatement("update ingredients set prix = ? where id = ?");
+            ps.setInt(1, prix);
+            ps.setInt(2, id);
+            int res = ps.executeUpdate();
+            if (res == 1) {
+                con.close();
+                return true;
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
 
     }
