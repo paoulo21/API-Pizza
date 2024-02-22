@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.PizzaDAO;
@@ -33,8 +35,20 @@ public class PizzaRestApi extends HttpServlet {
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
         if (splits.length == 2) {
-            int id = Integer.parseInt(splits[1]);
-            int prix = objectMapper.readValue(req.getReader(), Integer.class);
+            int id;
+            try {
+                id = Integer.parseInt(splits[1]);
+            } catch (NumberFormatException e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+            int prix;
+            try {
+                prix = objectMapper.readValue(req.getReader(), Integer.class);
+            } catch (Exception e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.patch(prix, id)) {
                 res.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -64,7 +78,13 @@ public class PizzaRestApi extends HttpServlet {
         }
 
         String id = splits[1];
-        Pizzas e = dao.findById(Integer.parseInt(id));
+        Pizzas e;
+        try {
+            e = dao.findById(Integer.parseInt(id));
+        } catch (NumberFormatException ex) {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         if (e == null) {
             res.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
@@ -88,16 +108,34 @@ public class PizzaRestApi extends HttpServlet {
         String[] splits = info.split("/");
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
-            Pizzas e = objectMapper.readValue(req.getReader(), Pizzas.class);
+            Pizzas e;
+            try {
+                e = objectMapper.readValue(req.getReader(), Pizzas.class);
+            } catch (Exception ex) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.save(e)) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }
             out.print(objectMapper.writeValueAsString(e));
         } else if (splits.length == 2) {
-            int id = Integer.parseInt(splits[1]);
+            int id;
+            try {
+                id = Integer.parseInt(splits[1]);
+            } catch (NumberFormatException e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             ObjectMapper objectMapper = new ObjectMapper();
-            Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            Ingredients e;
+            try {
+                e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            } catch (Exception ex) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.addIngredientsAtPizza(id, e.getId())) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
@@ -116,7 +154,13 @@ public class PizzaRestApi extends HttpServlet {
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
-        int id = Integer.parseInt(splits[1]);
+        int id;
+        try {
+            id = Integer.parseInt(splits[1]);
+        } catch (NumberFormatException e) {
+            res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         if (splits.length == 2) {
             if (!dao.delete(id)) {
                 res.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -126,7 +170,13 @@ public class PizzaRestApi extends HttpServlet {
             String jsonstring = objectMapper.writeValueAsString(l);
             out.print(jsonstring);
         } else if (splits.length == 3) {
-            int idIngredient = Integer.parseInt(splits[2]);
+            int idIngredient;
+            try {
+                idIngredient = Integer.parseInt(splits[2]);
+            } catch (NumberFormatException e) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (dao.deleteIngredientsFromPizza(id, idIngredient)) {
                 Pizzas e = dao.findById(id);
                 out.print(objectMapper.writeValueAsString(e));
