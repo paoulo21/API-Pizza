@@ -77,14 +77,17 @@ public class IngredientRestAPI extends HttpServlet {
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
         String[] splits = info.split("/");
-        int id = Integer.parseInt(splits[1]);
-        if (!dao.delete(id)) {
-            res.sendError(HttpServletResponse.SC_CONFLICT);
-            return;
+        if (splits.length == 2) {
+            int id = Integer.parseInt(splits[1]);
+            if (!dao.delete(id)) {
+                res.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            List<Ingredients> l = dao.findAll();
+            String jsonstring = objectMapper.writeValueAsString(l);
+            out.print(jsonstring);
         }
-        List<Ingredients> l = dao.findAll();
-        String jsonstring = objectMapper.writeValueAsString(l);
-        out.print(jsonstring);
+        res.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
