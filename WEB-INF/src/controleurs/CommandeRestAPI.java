@@ -57,7 +57,6 @@ public class CommandeRestAPI extends HttpServlet{
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
-        String[] splits = info.split("/");
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
             Commande c = objectMapper.readValue(req.getReader(), Commande.class);

@@ -103,7 +103,7 @@ public class CommandeDAO {
             PreparedStatement ps = con.prepareStatement("insert into commande (id, nom, dateCommande) values (?,?,?)");
             ps.setInt(1, c.getId());
             ps.setString(2, c.getNom());
-            ps.setDate(3, (Date) c.getDate());
+            ps.setString(3, c.getDate().toString());
             int res = ps.executeUpdate();
             if (res == 1) {
                 for (Pizzas pizza : c.getPizzas()) {
@@ -126,7 +126,7 @@ public class CommandeDAO {
                     }
                 }
             }
-            
+
         }catch (SQLException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
