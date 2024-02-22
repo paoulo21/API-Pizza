@@ -87,4 +87,32 @@ public class IngredientRestAPI extends HttpServlet {
         out.print(jsonstring);
     }
 
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getMethod();
+        if (!method.equals("PATCH")) {
+            super.service(req, resp);
+        } else {
+            this.doPatch(req, resp);
+        }
+    }
+
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json;charset=UTF-8");
+        String info = req.getPathInfo();
+        ObjectMapper objectMapper = new ObjectMapper();
+        int prix = objectMapper.readValue(req.getReader(), Integer.class);
+        String[] splits = info.split("/");
+        if (splits.length == 2) {
+            int id = Integer.parseInt(splits[1]);
+            if (!dao.changePrice(id, prix)) {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+    }
+
 }

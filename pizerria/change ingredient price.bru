@@ -1,0 +1,15 @@
+meta {
+  name: change ingredient price
+  type: http
+  seq: 13
+}
+
+patch {
+  url: http://localhost:8080/pizzeria/ingredients/1
+  body: json
+  auth: none
+}
+
+body:json {
+  2
+}
