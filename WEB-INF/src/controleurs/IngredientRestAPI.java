@@ -3,10 +3,10 @@ package controleurs;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.IngredientDAO;
-import dao.IngredientDAOList;
 import dto.Ingredients;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -64,7 +64,13 @@ public class IngredientRestAPI extends HttpServlet {
         String info = req.getPathInfo();
         if (info == null || info.equals("/")) {
             ObjectMapper objectMapper = new ObjectMapper();
-            Ingredients e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            Ingredients e;
+            try {
+                e = objectMapper.readValue(req.getReader(), Ingredients.class);
+            } catch (Exception ex) {
+                res.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
             if (!dao.save(e)) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
@@ -118,7 +124,13 @@ public class IngredientRestAPI extends HttpServlet {
         resp.setContentType("application/json;charset=UTF-8");
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
-        int prix = objectMapper.readValue(req.getReader(), Integer.class);
+        int prix;
+        try {
+            prix = objectMapper.readValue(req.getReader(), Integer.class);
+        } catch (Exception e) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
         String[] splits = info.split("/");
         if (splits.length == 2) {
             int id;
