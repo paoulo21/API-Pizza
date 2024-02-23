@@ -103,7 +103,7 @@ public class CommandeDAO {
             PreparedStatement ps = con.prepareStatement("insert into commande (id, nom, dateCommande) values (?,?,?)");
             ps.setInt(1, c.getId());
             ps.setString(2, c.getNom());
-            ps.setString(3, c.getDate().toString());
+            ps.setDate(3, new Date(c.getDate().getTime()));
             int res = ps.executeUpdate();
             if (res == 1) {
                 for (Pizzas pizza : c.getPizzas()) {
