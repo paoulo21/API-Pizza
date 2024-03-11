@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.PizzaDAO;
@@ -136,7 +134,7 @@ public class PizzaRestApi extends HttpServlet {
                 res.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
-            if (!dao.addIngredientsAtPizza(id, e.getId())) {
+            if (!dao.addIngredientsToPizza(id, e.getId())) {
                 res.sendError(HttpServletResponse.SC_CONFLICT);
                 return;
             }

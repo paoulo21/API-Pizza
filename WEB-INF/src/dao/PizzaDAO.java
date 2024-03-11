@@ -173,7 +173,7 @@ public class PizzaDAO {
         return false;
     }
 
-    public boolean addIngredientsAtPizza(int idPIz, int idIng) {
+    public boolean addIngredientsToPizza(int idPIz, int idIng) {
         con = ds.getConnection();
         try {
 
@@ -202,7 +202,7 @@ public class PizzaDAO {
         return false;
     }
 
-    public boolean patch(int prix, int id){
+    public boolean patch(int prix, int id) {
         con = ds.getConnection();
         try {
             PreparedStatement ps = con.prepareStatement("UPDATE pizzas SET prixBase=? WHERE id=? ");
@@ -210,7 +210,7 @@ public class PizzaDAO {
             ps.setInt(2, id);
             int result = ps.executeUpdate();
             con.close();
-            if(result > 0){
+            if (result > 0) {
                 return true;
             } else {
                 return false;

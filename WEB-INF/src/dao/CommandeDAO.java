@@ -112,7 +112,7 @@ public class CommandeDAO {
                             .prepareStatement("insert into pizzasCommande (idCom,idPiz) values (?,?)");
                     ps2.setInt(1, c.getId());
                     ps2.setInt(2, pizza.getId());
-                    int res2 = ps2.executeUpdate();
+                    ps2.executeUpdate();
                 }
             }
             con.close();
@@ -126,6 +126,92 @@ public class CommandeDAO {
                 con.close();
             } catch (Exception e2) {
             }
+        }
+        return false;
+    }
+
+    public boolean addPizzaToCommande(int idCom, int idPiz) {
+        con = ds.getConnection();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pizzasCommande VALUES(?,?)");
+            ps.setInt(1, idCom);
+            ps.setInt(2, idPiz);
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
+        }
+        return false;
+    }
+
+    public boolean delete(int id) {
+        con = ds.getConnection();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("DELETE FROM commande where id = ?");
+            ps.setInt(1, id);
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
+        }
+        return false;
+    }
+
+    public boolean deletePizzaFromCommande(int idCom, int idPiz) {
+        con = ds.getConnection();
+        try {
+
+            PreparedStatement ps = con.prepareStatement("DELETE FROM pizzasCommande where idCom = ? and idPiz = ?");
+            ps.setInt(1, idCom);
+            ps.setInt(2, idPiz);
+            int result = ps.executeUpdate();
+            if (result == 1) {
+                con.close();
+                return true;
+            } else {
+                con.close();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                con.close();
+            } catch (Exception e2) {
+            }
+
         }
         return false;
     }
