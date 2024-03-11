@@ -1,19 +1,32 @@
 meta {
   name: add new pizza
   type: http
-  seq: 9
+  seq: 11
 }
 
 post {
-  url: http://localhost:8080/pizzeria/pizzas/1
+  url: http://localhost:8080/pizzeria/pizzas/
   body: json
   auth: none
 }
 
 body:json {
   {
-      "id": 1,
-      "nom": "pomme de terre",
-      "prix": 3
+    "id": 4,
+    "nom": "végé",
+    "prixBase": 5,
+    "pate": "fine",
+    "ingredients": [
+      {
+        "id": 1,
+        "nom": "pomme de terre",
+        "prix": 3
+      },
+      {
+        "id": 2,
+        "nom": "poivrons",
+        "prix": 2
+      }
+    ]
   }
 }
