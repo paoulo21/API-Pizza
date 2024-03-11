@@ -21,10 +21,10 @@ public class CommandeDAO {
         con = ds.getConnection();
     }
 
-    public List<Commande> findAll(){
+    public List<Commande> findAll() {
         List<Commande> liste = new ArrayList<>();
         con = ds.getConnection();
-        try{
+        try {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM commande");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -32,7 +32,7 @@ public class CommandeDAO {
                 commande.setPizzas(getPizzasFromCommande(commande.getId()));
                 liste.add(commande);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } finally {
@@ -52,7 +52,8 @@ public class CommandeDAO {
         ps2.setInt(1, id);
         ResultSet rs2 = ps2.executeQuery();
         while (rs2.next()) {
-            Pizzas pizza = new Pizzas(rs2.getInt("id"), rs2.getString("nom"), rs2.getInt("prixBase"), rs2.getString("pate") );
+            Pizzas pizza = new Pizzas(rs2.getInt("id"), rs2.getString("nom"), rs2.getInt("prixBase"),
+                    rs2.getString("pate"));
             pizza.setIngredients(getIngredientsFromPizza(pizza.getId()));
             commande.add(pizza);
         }
@@ -73,7 +74,7 @@ public class CommandeDAO {
         return ingredients;
     }
 
-    public Commande findById(int id){
+    public Commande findById(int id) {
         con = ds.getConnection();
         Commande commande = null;
         try {
@@ -97,7 +98,7 @@ public class CommandeDAO {
         return commande;
     }
 
-    public boolean save(Commande c){
+    public boolean save(Commande c) {
         con = ds.getConnection();
         try {
             PreparedStatement ps = con.prepareStatement("insert into commande (id, nom, dateCommande) values (?,?,?)");
@@ -109,11 +110,10 @@ public class CommandeDAO {
                 for (Pizzas pizza : c.getPizzas()) {
                     PreparedStatement ps2 = con
                             .prepareStatement("insert into pizzasCommande (idCom,idPiz) values (?,?)");
-                    ps2.setInt(1, c.getId()); 
+                    ps2.setInt(1, c.getId());
                     ps2.setInt(2, pizza.getId());
-                    ps2.executeUpdate();
                     int res2 = ps2.executeUpdate();
-                    if(res2 == 1){
+                    if (res2 == 1) {
                         for (Ingredients ingredient : pizza.getIngredients()) {
                             PreparedStatement ps3 = con
                                     .prepareStatement("insert into ingredientsPizza (idPiz,idIng) values (?,?)");
@@ -127,7 +127,7 @@ public class CommandeDAO {
             }
             return true;
 
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             // TODO Auto-generated catch block
             System.out.println(e.getMessage());
         } finally {
