@@ -54,7 +54,6 @@ public class PizzaRestApi extends HttpServlet {
             Pizzas p = dao.findById(id);
             out.print(objectMapper.writeValueAsString(p));
         }
-        res.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
