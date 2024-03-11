@@ -39,3 +39,8 @@ INSERT INTO pizzasCommande VALUES (1,1);
 INSERT INTO pizzasCommande VALUES (1,2);
 INSERT INTO pizzasCommande VALUES (2,1);
 INSERT INTO pizzasCommande VALUES (2,3);
+
+DROP TABLE users;
+CREATE TABLE users(login text, pwd text, ROLE text, token text, nb int);
+INSERT INTO users VALUES ('jean','jean',NULL,NULL,0);
+INSERT INTO users VALUES ('paul','paul',NULL,NULL,0);
