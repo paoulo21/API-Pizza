@@ -122,10 +122,10 @@ public class CommandeDAO {
                             ps3.executeUpdate();
                         }
                         con.close();
-                        return true;
                     }
                 }
             }
+            return true;
 
         }catch (SQLException e) {
             // TODO Auto-generated catch block
