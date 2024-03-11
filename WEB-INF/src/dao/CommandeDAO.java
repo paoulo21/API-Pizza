@@ -113,18 +113,9 @@ public class CommandeDAO {
                     ps2.setInt(1, c.getId());
                     ps2.setInt(2, pizza.getId());
                     int res2 = ps2.executeUpdate();
-                    if (res2 == 1) {
-                        for (Ingredients ingredient : pizza.getIngredients()) {
-                            PreparedStatement ps3 = con
-                                    .prepareStatement("insert into ingredientsPizza (idPiz,idIng) values (?,?)");
-                            ps3.setInt(1, pizza.getId());
-                            ps3.setInt(2, ingredient.getId());
-                            ps3.executeUpdate();
-                        }
-                        con.close();
-                    }
                 }
             }
+            con.close();
             return true;
 
         } catch (SQLException e) {
