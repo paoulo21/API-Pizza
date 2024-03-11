@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Base64;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DS;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/etudiants2/*")
-public class ControleurEtudiant2 extends HttpServlet {
-    public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+public class Controleur {
+    public static boolean existInUsers(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         Connection con=null;
         try{
             DS ds = new DS();
@@ -36,22 +36,18 @@ public class ControleurEtudiant2 extends HttpServlet {
                 PreparedStatement ps = con.prepareStatement(querry);
                 ps.setString(1, login);
                 ps.setString(2, pwd);
-                if()
+                ResultSet rs = ps.executeQuery();
+
+                if(!rs.next()){
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return false;
+                }
             }
-            
-            res.setContentType("application/json;charset=UTF-8");
-            
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonstring = objectMapper.writeValueAsString(login+","+pwd);
-            out.print(jsonstring);
-            out.close();
+            return true;
         }catch(Exception e){
-            out.println(e.getMessage());
+            return false;
         }finally {
             try {con.close();} catch(Exception e2) {}
         }
-    }
-    public static void main(String[] args) {
-        
     }
 }
