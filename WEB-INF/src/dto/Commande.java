@@ -20,6 +20,8 @@ public class Commande {
     public Commande(int id, String nom, Date date) {
         this(id,nom,date, new ArrayList<>());
     }
+    public Commande() {
+    }
 
 
     public int getPrixTotal(){
