@@ -1,0 +1,32 @@
+meta {
+  name: add pizza to commande
+  type: http
+  seq: 18
+}
+
+post {
+  url: http://localhost:8080/pizzeria/commandes/3
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "id": 1,
+      "nom": "savoyarde",
+      "prixBase": 15,
+      "pate": "extra",
+      "ingredients": [
+        {
+          "id": 4,
+          "nom": "lardons",
+          "prix": 4
+        },
+        {
+          "id": 1,
+          "nom": "pomme de terre",
+          "prix": 2
+        }
+      ]
+    }
+}
