@@ -46,6 +46,7 @@ public class IngredientRestAPI extends HttpServlet {
             res.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+        
         if (splits.length == 2) {
             out.print(objectMapper.writeValueAsString(e));
         } else if (splits.length == 3 && splits[2].equals("name")) {

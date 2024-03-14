@@ -19,8 +19,9 @@ public class PizzaRestApi extends HttpServlet {
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(req.getParameter("Token") == null){
-
+        if(!AuthenUtil.verifyToken(req)){
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
         }
         if (req.getMethod().equalsIgnoreCase("PATCH")) {
             doPatch(req, res);
@@ -30,10 +31,7 @@ public class PizzaRestApi extends HttpServlet {
     }
 
     public void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(!AuthenUtil.verifyToken(req)){
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
+        
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
