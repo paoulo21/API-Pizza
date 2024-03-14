@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import authentification.Controleur;
 import dao.IngredientDAO;
 import dto.Ingredients;
 import jakarta.servlet.*;
@@ -18,7 +19,11 @@ public class IngredientRestAPI extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
-        res.setContentType("application/json;charset=UTF-8");
+        if(!Controleur.existInUsers(req, res)){
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+                res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -59,7 +64,11 @@ public class IngredientRestAPI extends HttpServlet {
 
     public void doPost(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
-        res.setContentType("application/json;charset=UTF-8");
+                if(!Controleur.existInUsers(req, res)){
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                    return;
+                }
+                res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
         if (info == null || info.equals("/")) {
@@ -84,6 +93,10 @@ public class IngredientRestAPI extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if(!Controleur.existInUsers(req, res)){
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
@@ -121,6 +134,10 @@ public class IngredientRestAPI extends HttpServlet {
     }
 
     protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!Controleur.existInUsers(req, resp)){
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
         resp.setContentType("application/json;charset=UTF-8");
         String info = req.getPathInfo();
         ObjectMapper objectMapper = new ObjectMapper();
