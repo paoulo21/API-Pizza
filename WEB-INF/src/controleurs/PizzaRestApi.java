@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import authentification.Controleur;
 import dao.PizzaDAO;
 import dto.Ingredients;
 import dto.Pizzas;
@@ -20,6 +19,9 @@ public class PizzaRestApi extends HttpServlet {
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if(req.getParameter("Token") == null){
+
+        }
         if (req.getMethod().equalsIgnoreCase("PATCH")) {
             doPatch(req, res);
         } else {
@@ -28,7 +30,7 @@ public class PizzaRestApi extends HttpServlet {
     }
 
     public void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(!Controleur.existInUsers(req, res)){
+        if(!AuthenUtil.verifyToken(req)){
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
@@ -63,10 +65,6 @@ public class PizzaRestApi extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, java.io.IOException {
-                if(!Controleur.existInUsers(req, res)){
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
                 res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
@@ -106,13 +104,12 @@ public class PizzaRestApi extends HttpServlet {
         return;
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, java.io.IOException {
-                if(!Controleur.existInUsers(req, res)){
-                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                    return;
-                }
-                res.setContentType("application/json;charset=UTF-8");
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, java.io.IOException {
+        if(!AuthenUtil.verifyToken(req)){
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
+        res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
         String[] splits = info.split("/");
@@ -159,7 +156,7 @@ public class PizzaRestApi extends HttpServlet {
     }
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(!Controleur.existInUsers(req, res)){
+        if(!AuthenUtil.verifyToken(req)){
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

@@ -1,0 +1,15 @@
+meta {
+  name: generateToken
+  type: http
+  seq: 21
+}
+
+get {
+  url: http://localhost:8080/pizzeria/generateToken
+  body: none
+  auth: none
+}
+
+vars:post-response {
+  token: res.body
+}

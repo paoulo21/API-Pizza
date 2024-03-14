@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import authentification.Controleur;
 import dao.CommandeDAO;
 import dto.Commande;
 import dto.Pizzas;
@@ -20,10 +19,6 @@ public class CommandeRestAPI extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(!Controleur.existInUsers(req, res)){
-            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
@@ -58,12 +53,11 @@ public class CommandeRestAPI extends HttpServlet {
 
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, java.io.IOException {
-            if(!Controleur.existInUsers(req, res)){
-                res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+    public void doPost(HttpServletRequest req, HttpServletResponse res)throws ServletException, java.io.IOException {
+        if(!AuthenUtil.verifyToken(req)){
+            res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
         res.setContentType("application/json;charset=UTF-8");
         PrintWriter out = res.getWriter();
         String info = req.getPathInfo();
@@ -87,7 +81,7 @@ public class CommandeRestAPI extends HttpServlet {
     }
 
     protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        if(!Controleur.existInUsers(req, res)){
+        if(!AuthenUtil.verifyToken(req)){
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
